@@ -93,6 +93,91 @@ target_1b = 6
 print("LC #1 Input:", nums_1b, "Target:", target_1b)
 print("LC #1 Output:", twoSum(nums_1b, target_1b))  # [1, 2]
 
+"""
+Day 9: Subarray Sum with Hashmap
+Author: [Your Name]
+Date: [Today's Date]
+
+Topics Covered:
+1. Subarray sum basics
+2. LeetCode #560 - Subarray Sum Equals K
+"""
+
+# ----------------------------------------------------
+# 1. Subarray Sum Basics
+# ----------------------------------------------------
+"""
+A subarray is a contiguous part of an array.
+
+Brute Force:
+- Check all subarrays and calculate sums.
+- Time Complexity: O(n^2), not efficient.
+
+Optimization using Hashmap:
+- Use prefix sum + hashmap to store frequency of prefix sums.
+- If prefix_sum - k exists in hashmap, it means there is a subarray
+  ending at current index with sum = k.
+"""
+
+# ----------------------------------------------------
+# 2. LeetCode #560 - Subarray Sum Equals K
+# ----------------------------------------------------
+"""
+Problem:
+Given an array of integers nums and an integer k,
+return the total number of subarrays whose sum equals to k.
+
+Example 1:
+Input: nums = [1,1,1], k = 2
+Output: 2
+
+Example 2:
+Input: nums = [1,2,3], k = 3
+Output: 2
+
+Approach:
+- Maintain prefix_sum while iterating.
+- Use hashmap to store frequency of prefix sums.
+- For each prefix_sum, check if (prefix_sum - k) exists in hashmap.
+- Add its frequency to count.
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+"""
+
+def subarraySum(nums, k):
+    prefix_sum = 0
+    count = 0
+    hashmap = {0: 1}  # To handle case when prefix_sum itself == k
+    
+    for num in nums:
+        prefix_sum += num
+        if prefix_sum - k in hashmap:
+            count += hashmap[prefix_sum - k]
+        hashmap[prefix_sum] = hashmap.get(prefix_sum, 0) + 1
+    
+    return count
+
+# Example tests
+nums_560a = [1, 1, 1]
+k_560a = 2
+print("LC #560 Input:", nums_560a, "k =", k_560a)
+print("LC #560 Output:", subarraySum(nums_560a, k_560a))  # Output: 2
+
+nums_560b = [1, 2, 3]
+k_560b = 3
+print("LC #560 Input:", nums_560b, "k =", k_560b)
+print("LC #560 Output:", subarraySum(nums_560b, k_560b))  # Output: 2
+
+
+# ----------------------------------------------------
+# Time Complexity Summary:
+# ----------------------------------------------------
+# Brute Force:        O(n^2)
+# Optimized (Hashmap) O(n)
+# ----------------------------------------------------
+
+
 
 # ----------------------------------------------------
 # Time Complexity Summary:
