@@ -178,6 +178,146 @@ print("LC #560 Output:", subarraySum(nums_560b, k_560b))  # Output: 2
 # ----------------------------------------------------
 
 
+"""
+Day 10: Sliding Window Basics
+Author: [Your Name]
+Date: [Today's Date]
+
+Topics Covered:
+1. Introduction to Sliding Window
+2. LeetCode #3 - Longest Substring Without Repeating Characters
+3. LeetCode #76 - Minimum Window Substring
+"""
+
+# ----------------------------------------------------
+# 1. Sliding Window Basics
+# ----------------------------------------------------
+"""
+Sliding Window is a technique where we use a "window" (a range of indices)
+that expands and contracts to solve substring/subarray problems efficiently.
+
+Use cases:
+- Substrings without duplicates
+- Subarrays with given sum
+- Minimum/maximum subarray problems
+"""
+
+# Simple Example: Max sum of subarray of size k
+def max_sum_subarray(nums, k):
+    window_sum = sum(nums[:k])
+    max_sum = window_sum
+    
+    for i in range(k, len(nums)):
+        window_sum += nums[i] - nums[i-k]
+        max_sum = max(max_sum, window_sum)
+    return max_sum
+
+print("Max sum subarray of size 3:", max_sum_subarray([1,2,3,4,5,6], 3))
+
+
+# ----------------------------------------------------
+# 2. LeetCode #3 - Longest Substring Without Repeating Characters
+# ----------------------------------------------------
+"""
+Problem:
+Given a string s, find the length of the longest substring
+without repeating characters.
+
+Example:
+Input: "abcabcbb"
+Output: 3 ("abc")
+
+Approach:
+- Use sliding window + hashmap to store last index of characters.
+- Move left pointer whenever a duplicate is found.
+
+Time Complexity: O(n)
+"""
+
+def lengthOfLongestSubstring(s):
+    char_index = {}
+    left = 0
+    max_len = 0
+    
+    for right, ch in enumerate(s):
+        if ch in char_index and char_index[ch] >= left:
+            left = char_index[ch] + 1
+        char_index[ch] = right
+        max_len = max(max_len, right - left + 1)
+    
+    return max_len
+
+print("LC #3 Input: 'abcabcbb'")
+print("LC #3 Output:", lengthOfLongestSubstring("abcabcbb"))  # 3
+
+
+# ----------------------------------------------------
+# 3. LeetCode #76 - Minimum Window Substring
+# ----------------------------------------------------
+"""
+Problem:
+Given two strings s and t, return the minimum window substring of s
+such that every character in t is included in the window.
+If no such substring exists, return "".
+
+Example:
+Input: s = "ADOBECODEBANC", t = "ABC"
+Output: "BANC"
+
+Approach:
+- Use sliding window + two pointers.
+- Expand right pointer until all chars from t are covered.
+- Then shrink left pointer to minimize the window.
+- Use hashmap for frequency count.
+
+Time Complexity: O(n)
+"""
+
+from collections import Counter
+
+def minWindow(s, t):
+    if not t or not s:
+        return ""
+    
+    need = Counter(t)
+    window = {}
+    
+    have, need_count = 0, len(need)
+    res, res_len = [-1, -1], float("inf")
+    
+    left = 0
+    for right, ch in enumerate(s):
+        window[ch] = window.get(ch, 0) + 1
+        
+        if ch in need and window[ch] == need[ch]:
+            have += 1
+        
+        while have == need_count:
+            # Update result if smaller window
+            if (right - left + 1) < res_len:
+                res = [left, right]
+                res_len = right - left + 1
+            
+            # Pop from left
+            window[s[left]] -= 1
+            if s[left] in need and window[s[left]] < need[s[left]]:
+                have -= 1
+            left += 1
+    
+    l, r = res
+    return s[l:r+1] if res_len != float("inf") else ""
+
+print("LC #76 Input: s = 'ADOBECODEBANC', t = 'ABC'")
+print("LC #76 Output:", minWindow("ADOBECODEBANC", "ABC"))  # "BANC"
+
+
+# ----------------------------------------------------
+# Time Complexity Summary:
+# ----------------------------------------------------
+# Max sum subarray (fixed window)        O(n)
+# LC #3 Longest substring (variable)     O(n)
+# LC #76 Minimum window substring        O(n)
+# ----------------------------------------------------
 
 # ----------------------------------------------------
 # Time Complexity Summary:
