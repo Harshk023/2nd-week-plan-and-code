@@ -325,3 +325,138 @@ print("LC #76 Output:", minWindow("ADOBECODEBANC", "ABC"))  # "BANC"
 # Dictionary (insert/search/delete)     O(1) average
 # LC #1 Two Sum                         O(n)
 # ----------------------------------------------------
+
+
+"""
+Day 11: Linked List Basics - Implement Singly Linked List
+Author: [Your Name]
+Date: [Today's Date]
+
+Topics Covered:
+1. What is a Linked List?
+2. Implementation of Singly Linked List
+3. Basic operations: Insert, Delete, Search, Display
+"""
+
+# ----------------------------------------------------
+# 1. Introduction
+# ----------------------------------------------------
+"""
+Array vs Linked List:
+- Arrays have contiguous memory allocation; resizing can be costly.
+- Linked Lists are dynamic; each element (node) stores:
+  -> data
+  -> pointer (reference) to the next node.
+
+Types:
+- Singly Linked List (each node points to next)
+- Doubly Linked List (nodes have prev & next)
+- Circular Linked List
+"""
+
+# ----------------------------------------------------
+# 2. Node Class
+# ----------------------------------------------------
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+
+# ----------------------------------------------------
+# 3. Singly Linked List Class
+# ----------------------------------------------------
+class SinglyLinkedList:
+    def __init__(self):
+        self.head = None
+
+    # Insert at end
+    def insert_end(self, data):
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+            return
+        temp = self.head
+        while temp.next:
+            temp = temp.next
+        temp.next = new_node
+
+    # Insert at beginning
+    def insert_begin(self, data):
+        new_node = Node(data)
+        new_node.next = self.head
+        self.head = new_node
+
+    # Search for a value
+    def search(self, key):
+        temp = self.head
+        while temp:
+            if temp.data == key:
+                return True
+            temp = temp.next
+        return False
+
+    # Delete a value
+    def delete(self, key):
+        temp = self.head
+
+        # Case: head node contains the key
+        if temp and temp.data == key:
+            self.head = temp.next
+            temp = None
+            return
+
+        # Search for key
+        prev = None
+        while temp and temp.data != key:
+            prev = temp
+            temp = temp.next
+
+        if not temp:
+            return  # Key not found
+
+        prev.next = temp.next
+        temp = None
+
+    # Display list
+    def display(self):
+        elems = []
+        temp = self.head
+        while temp:
+            elems.append(temp.data)
+            temp = temp.next
+        return elems
+
+
+# ----------------------------------------------------
+# 4. Example Usage
+# ----------------------------------------------------
+if __name__ == "__main__":
+    sll = SinglyLinkedList()
+    
+    # Insert elements
+    sll.insert_end(10)
+    sll.insert_end(20)
+    sll.insert_end(30)
+    sll.insert_begin(5)
+    
+    print("Linked List after insertions:", sll.display())
+    
+    # Search
+    print("Search 20:", sll.search(20))  # True
+    print("Search 40:", sll.search(40))  # False
+    
+    # Delete element
+    sll.delete(20)
+    print("Linked List after deleting 20:", sll.display())
+
+
+# ----------------------------------------------------
+# Time Complexity Summary:
+# ----------------------------------------------------
+# Insert at beginning: O(1)
+# Insert at end:       O(n)
+# Search:              O(n)
+# Delete:              O(n)
+# Display:             O(n)
+# ----------------------------------------------------
