@@ -460,3 +460,111 @@ if __name__ == "__main__":
 # Delete:              O(n)
 # Display:             O(n)
 # ----------------------------------------------------
+
+"""
+Day 12: Reverse Linked List & Detect Cycle
+Author: [Your Name]
+Date: [Today's Date]
+
+Topics Covered:
+1. LeetCode #206 - Reverse Linked List
+2. LeetCode #141 - Linked List Cycle Detection
+"""
+
+# ----------------------------------------------------
+# 1. Node class for Linked List
+# ----------------------------------------------------
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
+# ----------------------------------------------------
+# 2. LeetCode #206 - Reverse Linked List
+# ----------------------------------------------------
+"""
+Problem:
+Given the head of a singly linked list, reverse the list, and return the new head.
+
+Example:
+Input: 1 -> 2 -> 3 -> 4 -> 5
+Output: 5 -> 4 -> 3 -> 2 -> 1
+
+Approach:
+- Use 3 pointers: prev, curr, next
+- Traverse list and reverse pointers one by one
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+"""
+
+def reverseList(head):
+    prev, curr = None, head
+    while curr:
+        nxt = curr.next
+        curr.next = prev
+        prev = curr
+        curr = nxt
+    return prev
+
+
+# ----------------------------------------------------
+# 3. LeetCode #141 - Linked List Cycle Detection
+# ----------------------------------------------------
+"""
+Problem:
+Given head, determine if the linked list has a cycle in it.
+
+Example:
+Input: 3 -> 2 -> 0 -> -4 -> points back to node 2
+Output: True
+
+Approach:
+- Use Floyd’s Tortoise & Hare Algorithm
+- Move slow pointer by 1 step and fast pointer by 2 steps
+- If they meet, cycle exists
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+"""
+
+def hasCycle(head):
+    slow, fast = head, head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            return True
+    return False
+
+
+# ----------------------------------------------------
+# 4. Example Usage
+# ----------------------------------------------------
+if __name__ == "__main__":
+    # Create linked list 1 -> 2 -> 3 -> 4 -> 5
+    head = ListNode(1)
+    head.next = ListNode(2)
+    head.next.next = ListNode(3)
+    head.next.next.next = ListNode(4)
+    head.next.next.next.next = ListNode(5)
+
+    # Reverse linked list
+    print("Original List: 1 -> 2 -> 3 -> 4 -> 5")
+    rev = reverseList(head)
+    print("Reversed List:", end=" ")
+    temp = rev
+    while temp:
+        print(temp.val, end=" -> " if temp.next else "")
+        temp = temp.next
+    print()
+
+    # Create a cycle for testing LC #141
+    cycle_head = ListNode(3)
+    cycle_head.next = ListNode(2)
+    cycle_head.next.next = ListNode(0)
+    cycle_head.next.next.next = ListNode(-4)
+    cycle_head.next.next.next.next = cycle_head.next  # cycle created
+
+    print("Has Cycle:", hasCycle(cycle_head))  # True
