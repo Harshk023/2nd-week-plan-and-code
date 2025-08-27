@@ -568,3 +568,122 @@ if __name__ == "__main__":
     cycle_head.next.next.next.next = cycle_head.next  # cycle created
 
     print("Has Cycle:", hasCycle(cycle_head))  # True
+
+"""
+Day 13: Merge Two Sorted Linked Lists
+Author: [Your Name]
+Date: [Today's Date]
+
+Topics Covered:
+1. LeetCode #21 - Merge Two Sorted Linked Lists
+2. Iterative & Recursive Solutions
+"""
+
+# ----------------------------------------------------
+# 1. Node class for Linked List
+# ----------------------------------------------------
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
+# ----------------------------------------------------
+# 2. LeetCode #21 - Merge Two Sorted Linked Lists
+# ----------------------------------------------------
+"""
+Problem:
+Given the heads of two sorted linked lists, merge them into one sorted list.
+Return the merged list.
+
+Example:
+Input: l1 = 1->2->4, l2 = 1->3->4
+Output: 1->1->2->3->4->4
+
+Approach:
+- Iterative: Use a dummy node and compare nodes from l1 and l2
+- Recursive: Compare heads and recursively merge remaining nodes
+
+Time Complexity: O(n + m)
+Space Complexity: Iterative O(1), Recursive O(n + m) due to call stack
+"""
+
+# Iterative approach
+def mergeTwoLists_iterative(l1, l2):
+    dummy = ListNode()
+    tail = dummy
+    
+    while l1 and l2:
+        if l1.val < l2.val:
+            tail.next = l1
+            l1 = l1.next
+        else:
+            tail.next = l2
+            l2 = l2.next
+        tail = tail.next
+    
+    tail.next = l1 or l2
+    return dummy.next
+
+# Recursive approach
+def mergeTwoLists_recursive(l1, l2):
+    if not l1:
+        return l2
+    if not l2:
+        return l1
+    if l1.val < l2.val:
+        l1.next = mergeTwoLists_recursive(l1.next, l2)
+        return l1
+    else:
+        l2.next = mergeTwoLists_recursive(l1, l2.next)
+        return l2
+
+
+# ----------------------------------------------------
+# 3. Example Usage
+# ----------------------------------------------------
+if __name__ == "__main__":
+    # Create l1: 1->2->4
+    l1 = ListNode(1)
+    l1.next = ListNode(2)
+    l1.next.next = ListNode(4)
+    
+    # Create l2: 1->3->4
+    l2 = ListNode(1)
+    l2.next = ListNode(3)
+    l2.next.next = ListNode(4)
+    
+    # Iterative merge
+    merged_iter = mergeTwoLists_iterative(l1, l2)
+    print("Merged List (Iterative):", end=" ")
+    temp = merged_iter
+    while temp:
+        print(temp.val, end=" -> " if temp.next else "")
+        temp = temp.next
+    print()
+    
+    # Re-create lists for recursive merge (since previous nodes were altered)
+    l1 = ListNode(1)
+    l1.next = ListNode(2)
+    l1.next.next = ListNode(4)
+    
+    l2 = ListNode(1)
+    l2.next = ListNode(3)
+    l2.next.next = ListNode(4)
+    
+    # Recursive merge
+    merged_rec = mergeTwoLists_recursive(l1, l2)
+    print("Merged List (Recursive):", end=" ")
+    temp = merged_rec
+    while temp:
+        print(temp.val, end=" -> " if temp.next else "")
+        temp = temp.next
+    print()
+
+
+# ----------------------------------------------------
+# Time Complexity Summary:
+# ----------------------------------------------------
+# Iterative: O(n + m), Space: O(1)
+# Recursive: O(n + m), Space: O(n + m) due to recursion stack
+# ----------------------------------------------------
