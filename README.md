@@ -687,3 +687,111 @@ if __name__ == "__main__":
 # Iterative: O(n + m), Space: O(1)
 # Recursive: O(n + m), Space: O(n + m) due to recursion stack
 # ----------------------------------------------------
+
+"""
+Day 14: Mixed Practice – Hashing + Linked List
+Author: [Your Name]
+Date: [Today's Date]
+
+Topics Covered:
+1. Hashing: Intersection of Two Arrays (LC #349)
+2. Linked List: Intersection of Two Linked Lists (LC #160)
+"""
+
+# ----------------------------------------------------
+# 1. LC #349 - Intersection of Two Arrays
+# ----------------------------------------------------
+"""
+Problem:
+Given two integer arrays nums1 and nums2, return their intersection.
+Each element in the result must be unique, and you may return the result in any order.
+
+Example:
+Input: nums1 = [1,2,2,1], nums2 = [2,2]
+Output: [2]
+
+Approach:
+- Convert both lists into sets
+- Return the intersection using set operations
+
+Time Complexity: O(n + m)
+Space Complexity: O(n + m)
+"""
+
+def intersection(nums1, nums2):
+    return list(set(nums1) & set(nums2))
+
+
+# ----------------------------------------------------
+# 2. LC #160 - Intersection of Two Linked Lists
+# ----------------------------------------------------
+"""
+Problem:
+Given the heads of two singly linked lists headA and headB,
+return the node at which the two lists intersect. 
+If the two linked lists have no intersection, return null.
+
+Example:
+Input: A = [4,1,8,4,5], B = [5,6,1,8,4,5]
+Output: Node with value 8
+
+Approach:
+- Use two pointers (pA, pB) starting from headA and headB
+- Traverse both lists; when one reaches the end, redirect to the other’s head
+- If they intersect, pointers meet at intersection node
+- If not, both become None
+
+Time Complexity: O(n + m)
+Space Complexity: O(1)
+"""
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def getIntersectionNode(headA, headB):
+    if not headA or not headB:
+        return None
+    
+    pA, pB = headA, headB
+    while pA != pB:
+        pA = pA.next if pA else headB
+        pB = pB.next if pB else headA
+    return pA
+
+
+# ----------------------------------------------------
+# 3. Example Usage
+# ----------------------------------------------------
+if __name__ == "__main__":
+    # Example for Hashing problem
+    nums1 = [1,2,2,1]
+    nums2 = [2,2]
+    print("Intersection of Arrays:", intersection(nums1, nums2))  # Output: [2]
+
+    # Example for Linked List problem
+    # Create List A: 4 -> 1 -> 8 -> 4 -> 5
+    headA = ListNode(4)
+    headA.next = ListNode(1)
+    inter = ListNode(8)
+    inter.next = ListNode(4)
+    inter.next.next = ListNode(5)
+    headA.next.next = inter
+
+    # Create List B: 5 -> 6 -> 1 -> 8 -> 4 -> 5
+    headB = ListNode(5)
+    headB.next = ListNode(6)
+    headB.next.next = ListNode(1)
+    headB.next.next.next = inter  # intersect at node with value 8
+
+    result = getIntersectionNode(headA, headB)
+    print("Intersection Node:", result.val if result else None)  # Output: 8
+
+
+# ----------------------------------------------------
+# Time Complexity Summary:
+# ----------------------------------------------------
+# LC #349: O(n + m), Space: O(n + m)
+# LC #160: O(n + m), Space: O(1)
+# ----------------------------------------------------
